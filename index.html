@@ -190,7 +190,7 @@
         let isValid = true;
         const inputs = document.querySelectorAll('input[type="text"]');
         inputs.forEach(input => {
-            const value = parseFloat(input.value);
+            const value = input.value;
             const errorIcon = input.nextElementSibling;
             if (isNaN(value) || value < 0) {
                 errorIcon.classList.remove('hidden');
