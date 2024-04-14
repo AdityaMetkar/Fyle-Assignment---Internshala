@@ -192,7 +192,8 @@
         inputs.forEach(input => {
             const value = input.value;
             const errorIcon = input.nextElementSibling;
-            if (isNaN(value) || value < 0) {
+            console.log(value)
+            if (isNaN(value) || value < 0 || !value) {
                 errorIcon.classList.remove('hidden');
                 errorIcon.classList.add('show');
                 isValid = false;
