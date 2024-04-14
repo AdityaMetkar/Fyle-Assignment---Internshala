@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<style>
+    .container {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container-form {
+        height: 100vh;
+        width: 100vw;
+        max-height: 500px;
+        max-width: 500px;
+        border: 2px solid #CDD4DC;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #myform {
+        width: 80%;
+    }
+
+    .form-group {
+        position: relative;
+        margin: 10px 0;
+    }
+
+    label {
+        font-weight: 500;
+    }
+
+    .form-control {
+        border: 2px solid #CDD4DC !important;
+    }
+
+    ::placeholder {
+        color: white;
+    }
+
+    .btn {
+        margin-top: 8%;
+        width: 100%;
+        background-color: #6559F5;
+        color: white;
+    }
+
+    .modal-body {
+        text-align: center;
+    }
+
+    #tooltip {
+        background-color: #333;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .show {
+        display: block;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="container-form">
+            <form id="myform" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="input1">Enter gross annual income</label>
+                    <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="Gross annual income is your total salary in a year before any deductions"></i>
+                    <input type="text" class="form-control" id="input1" name="number1"
+                        placeholder="Enter gross annual income" style="position: relative;">
+                    <i class="fa fa-exclamation-circle hidden" id="error1"
+                        style="position: absolute; top: 55%; right: 10px;" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-title="Please enter numbers only"></i>
+                </div>
+                <div class="form-group">
+                    <label for="input2">Enter extra income</label>
+                    <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="Extra Income from external sources"></i>
+                    <input type="text" class="form-control" id="input2" name="number2" placeholder="Enter extra income">
+                    <i class="fa fa-exclamation-circle hidden" id="error2"
+                        style="position: absolute; top: 55%; right: 10px;" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-title="Please enter numbers only"></i>
+
+                </div>
+                <div class="form-group">
+                    <label for="select">Enter age group</label>
+                    <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="The age category to which you belong"></i>
+                    <select class="form-control" id="select" name="select">
+                        <option disabled selected value> -- select an option -- </option>
+                        <option value="0.3">&lt;40</option>
+                        <option value="0.4">&ge;40 & &lt;60</option>
+                        <option value="0.1">&ge;60</option>
+                    </select>
+                    <i class="fa fa-exclamation-circle hidden" id="error3"
+                        style="position: absolute; top: 55%; right: 10px;" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-title="Please select age group"></i>
+
+                </div>
+                <div class="form-group">
+                    <label for="input3">Enter total applicable deductions</label>
+                    <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-title="Total Deductions after icome use"></i>
+                    <input type="text" class="form-control" id="input3" name="number3"
+                        placeholder="Enter total applicable deductions">
+                    <i class="fa fa-exclamation-circle hidden" id="error4"
+                        style="position: absolute; top: 55%; right: 10px;" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-title="Please enter numbers only"></i>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="display" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>Your overall income will be</h2>
+                    <h4 id="result">ABC</h4>
+                    <h6><strong>After tax deductions</strong></h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+<!-- Bootstrap JS -->
+<!-- Development version -->
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+
+<!-- Production version -->
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script>
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    function calculateTax(percent, gross, extra, deductions) {
+        const threshold = 800000; // Threshold for tax calculation
+        const taxableIncome = Math.max(0, gross + extra - deductions - threshold); // Calculate taxable income
+        let tax = 0; // Initialize tax
+
+        if (taxableIncome > 0) {
+            tax = percent * taxableIncome
+        }
+        console.log(tax)
+        return tax;
+    }
+
+    // Function to validate number input fields and show error icons
+    function validateInputs() {
+        let isValid = true;
+        const inputs = document.querySelectorAll('input[type="text"]');
+        inputs.forEach(input => {
+            const value = parseFloat(input.value);
+            const errorIcon = input.nextElementSibling;
+            if (isNaN(value) || value < 0) {
+                errorIcon.classList.remove('hidden');
+                errorIcon.classList.add('show');
+                isValid = false;
+            } else {
+                errorIcon.classList.remove('show');
+                errorIcon.classList.add('hidden');
+            }
+        });
+
+        let s = document.getElementById('select');
+        let errorIcon = s.nextElementSibling; // Get the error icon element
+
+        if (isNaN(parseFloat(s.value))) {
+            errorIcon.classList.remove('hidden');
+            errorIcon.classList.add('show');
+            isValid = false;
+        } else {
+            errorIcon.classList.add('hidden');
+            errorIcon.classList.remove('show');
+        }
+
+        console.log(isValid)
+        return isValid;
+    }
+
+    // Function to handle form submission
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        const isValidInputs = validateInputs();
+
+        if (isValidInputs) {
+
+            const income = parseFloat(document.getElementById('input1').value);
+            const extraIncome = parseFloat(document.getElementById('input2').value);
+            const deductions = parseFloat(document.getElementById('input3').value);
+            const age_percentage = parseFloat(document.getElementById('select').value);
+
+            console.log(age_percentage, income, extraIncome, deductions)
+            const tax = calculateTax(age_percentage, income, extraIncome, deductions);
+            const overallIncome = (income + extraIncome - deductions - tax).toFixed(2);
+            document.getElementById('result').textContent = overallIncome.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            const modal = new bootstrap.Modal(document.getElementById('display'));
+            modal.show();
+
+            document.getElementById('myform').reset();
+        }
+    }
+
+</script>
+
+
+</html>
